@@ -31,12 +31,12 @@ func sendMessage(ch chan<- int) (int, bool) {
 
 func consume(ch <-chan int) {
 	for {
+		time.Sleep(1 * time.Second)
 		if n, ok := receiveMessage(ch); ok {
 			fmt.Printf("### receive messgae [%d] from channel ###\n", n)
 			continue
 		}
 		fmt.Println("### fail to receive message, channel is empty")
-		time.Sleep(15 * time.Second)
 	}
 }
 
