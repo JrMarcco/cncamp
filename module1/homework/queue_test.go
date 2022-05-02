@@ -9,8 +9,8 @@ import (
 )
 
 func produce(ch chan<- int) {
-	for {
-		time.Sleep(time.Second)
+	ticker := time.NewTicker(time.Second)
+	for range ticker.C {
 		if n, ok := sendMessage(ch); ok {
 			fmt.Printf("### send message [%d] to channel ###\n", n)
 			continue
@@ -30,8 +30,8 @@ func sendMessage(ch chan<- int) (int, bool) {
 }
 
 func consume(ch <-chan int) {
-	for {
-		time.Sleep(1 * time.Second)
+	ticker := time.NewTicker(time.Second)
+	for range ticker.C {
 		if n, ok := receiveMessage(ch); ok {
 			fmt.Printf("### receive messgae [%d] from channel ###\n", n)
 			continue
