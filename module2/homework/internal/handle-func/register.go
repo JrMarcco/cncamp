@@ -3,6 +3,7 @@ package handle_func
 import (
 	"cncamp/module2/homework/pkg/hctx"
 	"os"
+	"strings"
 )
 
 // HeaderHF 将 request 中带的 header 写入 response header
@@ -16,8 +17,17 @@ var HeaderHF = func(httpCtx *hctx.HttpContext) {
 
 // EnvVarHF 读取当前系统的环境变量中的 VERSION 配置，并写入 response header
 var EnvVarHF = func(httpCtx *hctx.HttpContext) {
+
 	key := "VERSION"
-	httpCtx.SetRspHeader(key, os.Getenv(key))
+	rawQuery := httpCtx.Req.URL.RawQuery
+	if rawQuery != "" {
+		key = strings.Split(rawQuery, "=")[0]
+	}
+	if envVar, ok := os.LookupEnv(key); ok {
+		httpCtx.SetRspHeader(key, envVar)
+		return
+	}
+	httpCtx.WriteOkStr("Env var not found")
 }
 
 var HealthzHF = func(httpCtx *hctx.HttpContext) {
