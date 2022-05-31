@@ -3,12 +3,11 @@ package route
 import (
 	"cncamp/module2/homework/pkg/hctx"
 	"fmt"
-	"net/http"
 	"sync"
 )
 
 type RouterHandler interface {
-	http.Handler
+	HandleHttp(httpCtx *hctx.HttpContext)
 	Router
 }
 
@@ -16,10 +15,9 @@ type SimpleRouterHandler struct {
 	handlers sync.Map
 }
 
-func (srh *SimpleRouterHandler) ServeHTTP(rspWriter http.ResponseWriter, req *http.Request) {
-	handlerKey := fmt.Sprintf("%s %s", req.Method, req.URL.Path)
+func (srh *SimpleRouterHandler) HandleHttp(httpCtx *hctx.HttpContext) {
+	handlerKey := fmt.Sprintf("%s %s", httpCtx.Req.Method, httpCtx.Req.URL.Path)
 
-	httpCtx := hctx.NewHttpContext(rspWriter, req)
 	if handler, ok := srh.handlers.Load(handlerKey); ok {
 		handler.(HandleFunc)(httpCtx)
 		return

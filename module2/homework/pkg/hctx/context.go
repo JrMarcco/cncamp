@@ -55,7 +55,7 @@ func (httpCtx *HttpContext) Ok(rsp any) {
 }
 
 func (httpCtx *HttpContext) NotFound() {
-	if err := httpCtx.WriteRspJson(http.StatusNotFound, nil); err != nil {
+	if err := httpCtx.WriteRspStr(http.StatusNotFound, "404"); err != nil {
 		httpCtx.Bad()
 	}
 }
@@ -69,9 +69,11 @@ func (httpCtx *HttpContext) SetRspHeader(key string, value string) {
 	httpCtx.RspWriter.Header().Set(key, value)
 }
 
-func NewHttpContext(rspWriter http.ResponseWriter, req *http.Request) *HttpContext {
-	return &HttpContext{
-		RspWriter: rspWriter,
-		Req:       req,
-	}
+func (httpCtx *HttpContext) Reset(rspWriter http.ResponseWriter, req *http.Request) {
+	httpCtx.RspWriter = rspWriter
+	httpCtx.Req = req
+}
+
+func New() *HttpContext {
+	return &HttpContext{}
 }
