@@ -2,6 +2,7 @@ package handle_func
 
 import (
 	"cncamp/module2/homework/pkg/hctx"
+	"fmt"
 	"os"
 	"strings"
 )
@@ -31,5 +32,5 @@ var EnvVarHF = func(httpCtx *hctx.HttpContext) {
 }
 
 var HealthzHF = func(httpCtx *hctx.HttpContext) {
-	httpCtx.WriteOkStr("activating")
+	httpCtx.WriteOkStr(fmt.Sprintln("activating"))
 }

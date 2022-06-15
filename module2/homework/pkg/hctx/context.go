@@ -11,6 +11,16 @@ type HttpContext struct {
 	RspWriter http.ResponseWriter
 }
 
+func (httpCtx *HttpContext) WriteRspStr(httpStatusCode int, rsp string) error {
+	httpCtx.RspWriter.WriteHeader(httpStatusCode)
+
+	if rsp != "" {
+		_, err := httpCtx.RspWriter.Write([]byte(rsp))
+		return err
+	}
+	return nil
+}
+
 func (httpCtx *HttpContext) WriteRspJson(httpStatusCode int, rsp any) error {
 	httpCtx.RspWriter.WriteHeader(httpStatusCode)
 
@@ -23,16 +33,7 @@ func (httpCtx *HttpContext) WriteRspJson(httpStatusCode int, rsp any) error {
 		_, err = httpCtx.RspWriter.Write(rspJson)
 		return err
 	}
-	return nil
-}
 
-func (httpCtx *HttpContext) WriteRspStr(httpStatusCode int, rsp string) error {
-	httpCtx.RspWriter.WriteHeader(httpStatusCode)
-
-	if rsp != "" {
-		_, err := httpCtx.RspWriter.Write([]byte(rsp))
-		return err
-	}
 	return nil
 }
 
