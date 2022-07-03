@@ -22,7 +22,7 @@ import (
 	"net/http"
 
 	admission "k8s.io/api/admission/v1beta1"
-	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/serializer"
 )
@@ -48,7 +48,7 @@ type admitFunc func(*admission.AdmissionRequest) ([]patchOperation, error)
 
 // isKubeNamespace checks if the given namespace is a Kubernetes-owned namespace.
 func isKubeNamespace(ns string) bool {
-	return ns == metaV1.NamespacePublic || ns == metaV1.NamespaceSystem
+	return ns == metav1.NamespacePublic || ns == metav1.NamespaceSystem
 }
 
 // doServeAdmitFunc parses the HTTP request for an admission controller webhook, and -- in case of a well-formed
@@ -94,7 +94,7 @@ func doServeAdmitFunc(w http.ResponseWriter, r *http.Request, admit admitFunc) (
 		// the API server will be unable to process the response.
 		// Note: a v1beta1 AdmissionReview is JSON-compatible with the v1 version, that's why
 		// we do not need to differentiate during unmarshaling or in the actual logic.
-		TypeMeta: metaV1.TypeMeta{
+		TypeMeta: metav1.TypeMeta{
 			Kind:       "AdmissionReview",
 			APIVersion: "admission.k8s.io/v1",
 		},
@@ -114,7 +114,7 @@ func doServeAdmitFunc(w http.ResponseWriter, r *http.Request, admit admitFunc) (
 		// If the handler returned an error, incorporate the error message into the response and deny the object
 		// creation.
 		admissionReviewResponse.Response.Allowed = false
-		admissionReviewResponse.Response.Result = &metaV1.Status{
+		admissionReviewResponse.Response.Result = &metav1.Status{
 			Message: err.Error(),
 		}
 	} else {

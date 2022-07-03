@@ -21,8 +21,8 @@ import (
 	"path/filepath"
 
 	admission "k8s.io/api/admission/v1beta1"
-	coreV1 "k8s.io/api/core/v1"
-	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	corev1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 const (
@@ -32,7 +32,7 @@ const (
 )
 
 var (
-	podResource = metaV1.GroupVersionResource{Version: "v1", Resource: "pods"}
+	podResource = metav1.GroupVersionResource{Version: "v1", Resource: "pods"}
 )
 
 // applySecurityDefaults implements the logic of our example admission controller webhook. For every pod that is created
@@ -55,7 +55,7 @@ func applySecurityDefaults(req *admission.AdmissionRequest) ([]patchOperation, e
 
 	// Parse the Pod object.
 	raw := req.Object.Raw
-	pod := coreV1.Pod{}
+	pod := corev1.Pod{}
 	if _, _, err := universalDeserializer.Decode(raw, nil, &pod); err != nil {
 		return nil, fmt.Errorf("could not deserialize pod object: %v", err)
 	}
