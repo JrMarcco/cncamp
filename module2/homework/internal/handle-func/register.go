@@ -26,6 +26,7 @@ var EnvVarHF = func(httpCtx *hctx.HttpContext) {
 	}
 	if envVar, ok := os.LookupEnv(key); ok {
 		httpCtx.SetRspHeader(key, envVar)
+		httpCtx.WriteOkStr(envVar)
 		return
 	}
 	httpCtx.WriteOkStr("Env var not found")

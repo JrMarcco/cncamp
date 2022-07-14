@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: simple-web-deployment
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: simple-web
@@ -13,6 +13,28 @@ spec:
         app: simple-web
     spec:
       containers:
-        - name:
-          image:
+        - name: simple-web
+          image: jrmarcco/simple-web
+          # 将 configMap : simple-web-env 的数据定义为容器环境变量
+          args:
+            - /bin/sh
+            - -c
+            - env
+          envFrom:
+            - configMapRef:
+                name: simple-web-env
+          resources:
+            limits:
+              memory: 256Mi
+              cpu: 500m
+            requests:
+              memory: 128Mi
+              cpu: 100m
           readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /healthz
+              port: 8080
+              scheme: HTTP
+            periodSeconds: 5
+            timeoutSeconds: 15
