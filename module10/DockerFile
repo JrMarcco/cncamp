@@ -1,0 +1,3 @@
+FROM ubuntu
+ADD bin/amd64/simple-web /simple-web
+ENTRYPOINT /simple-web
