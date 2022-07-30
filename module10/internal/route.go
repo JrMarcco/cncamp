@@ -2,28 +2,37 @@ package internal
 
 import (
 	"cncamp/module10/framework"
-	"cncamp/module10/framework/middleware"
-	"cncamp/module10/internal/controller"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
-func RegisterRouter(groupApi *framework.Group) {
+func prometheusHandler() framework.HandlerFunc {
+	prometheusHandler := promhttp.Handler()
+	return func(ctx *framework.Context) {
+		prometheusHandler.ServeHTTP(ctx.ResponseWriter(), ctx.Request())
+	}
+}
 
-	groupApi.Get("/healthz", controller.HealthzController)
-	groupApi.Get("/timeout", controller.TimeoutController)
-	groupApi.Get("/user/login", middleware.Cost(), controller.UserController)
+func RegisterRouter(core *framework.Core) {
 
-	subApi := groupApi.Group("/sub")
+	core.Get("/metrics", prometheusHandler())
+
+	groupApi := core.Group("simple-web")
 	{
-		subApi.Use(middleware.Cost())
+		groupApi.Get("/healthz", HealthzController)
+		groupApi.Get("/time", TimeController)
+		groupApi.Get("/user/login", UserController)
 
-		subApi.Get("/:id", controller.SubjectGetController)
-		subApi.Put("/:id", controller.SubjectUpdateController)
-		subApi.Delete("/:id", controller.SubjectDelController)
-		subApi.Get("/list/all", controller.SubjectListController)
-
-		subInnerApi := subApi.Group("/info")
+		subApi := groupApi.Group("/sub")
 		{
-			subInnerApi.Get("/name", controller.SubjectNameController)
+			subApi.Get("/:id", SubjectGetController)
+			subApi.Put("/:id", SubjectUpdateController)
+			subApi.Delete("/:id", SubjectDelController)
+			subApi.Get("/list/all", SubjectListController)
+
+			subInnerApi := subApi.Group("/info")
+			{
+				subInnerApi.Get("/name", SubjectNameController)
+			}
 		}
 	}
 }

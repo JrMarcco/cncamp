@@ -15,11 +15,11 @@ import (
 
 func main() {
 	core := framework.NewCore()
-	core.Use(middleware.Recovery())
+	core.Use(middleware.Recovery(), middleware.Cost())
 
-	groupApi := core.Group("simple-web")
+	internal.RegisterMetrics()
+	internal.RegisterRouter(core)
 
-	internal.RegisterRouter(groupApi)
 	server := &http.Server{
 		Handler: core,
 		Addr:    ":8080",

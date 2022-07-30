@@ -1,4 +1,4 @@
-package controller
+package internal
 
 import "cncamp/module10/framework"
 

@@ -121,7 +121,7 @@ func (ctx *Context) QueryString(key string, def string) (string, bool) {
 	return def, false
 }
 
-func (ctx Context) QueryStringSlice(key string, def []string) ([]string, bool) {
+func (ctx *Context) QueryStringSlice(key string, def []string) ([]string, bool) {
 	params := ctx.QueryAll()
 	if values, ok := params[key]; ok {
 		return values, true
@@ -267,7 +267,7 @@ func (ctx *Context) FormString(key string, def string) (string, bool) {
 	return def, false
 }
 
-func (ctx Context) FormStringSlice(key string, def []string) ([]string, bool) {
+func (ctx *Context) FormStringSlice(key string, def []string) ([]string, bool) {
 	params := ctx.FormAll()
 	if values, ok := params[key]; ok {
 		return values, true
@@ -343,7 +343,7 @@ func (ctx *Context) Host() string {
 	return ctx.req.URL.Host
 }
 
-func (ctx Context) ClientIP() string {
+func (ctx *Context) ClientIP() string {
 	ipAddress := ctx.req.Header.Get("X-Real-Ip")
 	if ipAddress != "" {
 		return ipAddress
