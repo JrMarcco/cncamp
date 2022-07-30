@@ -3,6 +3,7 @@ package main
 import (
 	"cncamp/module10/framework"
 	"cncamp/module10/framework/middleware"
+	"cncamp/module10/internal"
 	"context"
 	"log"
 	"net/http"
@@ -18,7 +19,7 @@ func main() {
 
 	groupApi := core.Group("simple-web")
 
-	registerRouter(groupApi)
+	internal.RegisterRouter(groupApi)
 	server := &http.Server{
 		Handler: core,
 		Addr:    ":8080",
