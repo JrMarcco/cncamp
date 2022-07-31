@@ -1,4 +1,4 @@
-IMAGE ?= jrx.harbor.domain/jrmarcco/simple-web:latest
+IMAGE ?= jrx.harbor.domain/jrmarcco/simple-web:metrics
 build:
 	mkdir -p bin/amd64
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o bin/amd64 ./cmd/simple-web

@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-web-metrics
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: simple-web-metrics
+  template:
+    metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+      labels:
+        app: simple-web-metrics
+    spec:
+      containers:
+        - name: simple-web-metrics
+          image: jrx.harbor.domain/jrmarcco/simple-web:metrics
+          ports:
+            - containerPort: 8080
