@@ -17,6 +17,6 @@ spec:
     spec:
       containers:
         - name: simple-web-metrics
-          image: jrmarcco/simple-web
+          image: jrmarcco/simple-web:metric
           ports:
             - containerPort: 8080
