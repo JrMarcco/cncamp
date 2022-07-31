@@ -17,6 +17,6 @@ spec:
     spec:
       containers:
         - name: simple-web-metrics
-          image: jrx.harbor.domain/jrmarcco/simple-web:metrics
+          image: jrmarcco/simple-web
           ports:
             - containerPort: 8080
