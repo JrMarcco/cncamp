@@ -1,0 +1,23 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: simple-vs
+spec:
+  gateways:
+    - simple-gw
+  hosts:
+    - simple.jrx.io
+  http:
+    - match:
+      - port: 443
+      - uri:
+          # 匹配前缀
+          prefix: "/simple"
+      rewrite:
+        # 转换为实际前缀
+        uri: "/simple-web"
+      route:
+        - destination:
+            host: simple-web.simple-web.svc.cluster.local
+            port:
+              number: 80
