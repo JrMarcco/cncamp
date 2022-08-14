@@ -18,8 +18,7 @@ spec:
       containers:
         - name: simple
           imagePullPolicy: Always
-          # 修改镜像
-          image: jrmarcco/simple-web:tracing
+          image: jrmarcco/simple-web:metric
           ports:
             - containerPort: 8080
 ---
