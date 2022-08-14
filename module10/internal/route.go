@@ -16,23 +16,20 @@ func RegisterRouter(core *framework.Core) {
 
 	core.Get("/metrics", prometheusHandler())
 
-	groupApi := core.Group("simple-web")
+	core.Get("/healthz", HealthzController)
+	core.Get("/time", TimeController)
+	core.Get("/user/login", UserController)
+
+	subApi := core.Group("/sub")
 	{
-		groupApi.Get("/healthz", HealthzController)
-		groupApi.Get("/time", TimeController)
-		groupApi.Get("/user/login", UserController)
+		subApi.Get("/:id", SubjectGetController)
+		subApi.Put("/:id", SubjectUpdateController)
+		subApi.Delete("/:id", SubjectDelController)
+		subApi.Get("/list/all", SubjectListController)
 
-		subApi := groupApi.Group("/sub")
+		subInnerApi := subApi.Group("/info")
 		{
-			subApi.Get("/:id", SubjectGetController)
-			subApi.Put("/:id", SubjectUpdateController)
-			subApi.Delete("/:id", SubjectDelController)
-			subApi.Get("/list/all", SubjectListController)
-
-			subInnerApi := subApi.Group("/info")
-			{
-				subInnerApi.Get("/name", SubjectNameController)
-			}
+			subInnerApi.Get("/name", SubjectNameController)
 		}
 	}
 }
