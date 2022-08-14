@@ -3,7 +3,7 @@
 make release
 
 # 部署 simple-web
-kubectl apply -f deployment/deployment.yaml
+kubectl apply -f deployment/deployment.deployment
 # ---
 # deployment.apps/simple-web-metrics created
 # ---

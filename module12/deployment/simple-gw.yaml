@@ -1,0 +1,17 @@
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: simple-gw
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - hosts:
+        - simple.jrx.io
+      port:
+        name: https-default
+        number: 443
+        protocol: HTTPS
+      tls:
+        mode: SIMPLE
+        credentialName: jrx-credential
