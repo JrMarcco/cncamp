@@ -8,7 +8,7 @@ import (
 
 func HttpController(c *framework.Context) {
 
-	req, err := http.NewRequest("GET", "http://simple-web-1", nil)
+	req, err := http.NewRequest("GET", "http://simple-web/simple-web/time", nil)
 	if err != nil {
 		fmt.Printf("%s", err)
 	}
