@@ -20,6 +20,7 @@ func RegisterRouter(core *framework.Core) {
 	{
 		groupApi.Get("/healthz", HealthzController)
 		groupApi.Get("/time", TimeController)
+		groupApi.Get("/http", HttpController)
 		groupApi.Get("/user/login", UserController)
 
 		subApi := groupApi.Group("/sub")
